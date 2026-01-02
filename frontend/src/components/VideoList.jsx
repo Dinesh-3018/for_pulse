@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchVideos } from "../store/slices/videoSlice";
 import { Play, Shield, ShieldAlert, Clock, Loader, AlertTriangle, CheckCircle2 } from "lucide-react";
+import API_BASE_URL from "../config";
 
 const VideoList = React.memo(({ onSelectVideo }) => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const VideoList = React.memo(({ onSelectVideo }) => {
         <AlertTriangle className="h-10 w-10 text-red-500 mx-auto mb-3" />
         <h3 className="text-lg font-bold text-red-800 mb-1">Failed to load videos</h3>
         <p className="text-red-600 mb-4">{error}</p>
-        <button 
+        <button
           onClick={() => dispatch(fetchVideos())}
           className="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700 transition-all"
         >
@@ -34,7 +35,7 @@ const VideoList = React.memo(({ onSelectVideo }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {videos.length === 0 ? (
         <div className="col-span-full text-center py-20 text-gray-500">
-          No videos found. 
+          No videos found.
         </div>
       ) : (
         videos.map((video) => (
@@ -43,11 +44,11 @@ const VideoList = React.memo(({ onSelectVideo }) => {
             className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all cursor-pointer group"
             onClick={() => onSelectVideo(video)}
           >
-            <div 
+            <div
               className="aspect-video bg-gray-900 flex items-center justify-center relative bg-cover bg-center"
               style={{
-                backgroundImage: video.thumbnail 
-                  ? `url(http://localhost:5001/${video.thumbnail})` 
+                backgroundImage: video.thumbnail
+                  ? `url(${API_BASE_URL}/${video.thumbnail})`
                   : 'none'
               }}
             >
@@ -67,9 +68,8 @@ const VideoList = React.memo(({ onSelectVideo }) => {
                   <Loader className={`h-8 w-8 text-primary-400 ${video.status === 'processing' ? 'animate-spin' : 'animate-pulse'}`} />
                   <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden shadow-inner">
                     <div
-                      className={`h-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)] ${
-                        video.status === 'processing' ? 'bg-primary-500' : 'bg-gray-500'
-                      }`}
+                      className={`h-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)] ${video.status === 'processing' ? 'bg-primary-500' : 'bg-gray-500'
+                        }`}
                       style={{ width: `${video.processingProgress || 0}%` }}
                     />
                   </div>
@@ -80,7 +80,7 @@ const VideoList = React.memo(({ onSelectVideo }) => {
                     <span className="text-[10px] text-gray-300 uppercase font-medium animate-pulse">
                       {video.status === 'processing' ? 'Analyzing Content...' : 'Queued for Analysis...'}
                     </span>
-                    
+
                     {/* Real-time Analysis Logs */}
                     {video.detectedLabels && video.detectedLabels.length > 0 && (
                       <div className="mt-2 w-full max-h-16 overflow-y-auto bg-black/50 rounded p-2 space-y-1">
@@ -88,8 +88,8 @@ const VideoList = React.memo(({ onSelectVideo }) => {
                           🔍 Detected:
                         </div>
                         {video.detectedLabels.map((label, idx) => (
-                          <div 
-                            key={idx} 
+                          <div
+                            key={idx}
                             className="text-[9px] text-yellow-300 font-mono animate-pulse"
                           >
                             • {label.replace('_', ' ')}
@@ -124,26 +124,24 @@ const VideoList = React.memo(({ onSelectVideo }) => {
                 <div className="flex items-center space-x-2">
                   {/* Visibility Badge */}
                   <span
-                    className={`px-2 py-0.5 rounded-full font-medium ${
-                      video.visibility === "public"
+                    className={`px-2 py-0.5 rounded-full font-medium ${video.visibility === "public"
                         ? "bg-blue-50 text-blue-700"
                         : "bg-gray-100 text-gray-700"
-                    }`}
+                      }`}
                     title={video.visibility === "public" ? "Public - Everyone can view" : "Private - Only Admin/Editor can view"}
                   >
                     {video.visibility === "public" ? "🌍" : "🔒"}
                   </span>
                   {/* Status Badge */}
                   <span
-                    className={`px-2 py-0.5 rounded-full font-medium ${
-                      video.status === "completed"
+                    className={`px-2 py-0.5 rounded-full font-medium ${video.status === "completed"
                         ? "bg-green-50 text-green-700"
                         : video.status === "processing"
-                        ? "bg-blue-50 text-blue-700"
-                        : video.status === "failed"
-                        ? "bg-red-50 text-red-700"
-                        : "bg-gray-50 text-gray-700"
-                    }`}
+                          ? "bg-blue-50 text-blue-700"
+                          : video.status === "failed"
+                            ? "bg-red-50 text-red-700"
+                            : "bg-gray-50 text-gray-700"
+                      }`}
                   >
                     {(video.status || "pending").toUpperCase()}
                   </span>
@@ -152,20 +150,19 @@ const VideoList = React.memo(({ onSelectVideo }) => {
               {video.detectedLabels && video.detectedLabels.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-1">
                   {video.detectedLabels.map((label, idx) => (
-                    <span 
-                      key={idx} 
-                      className={`text-[10px] px-1.5 py-0.5 rounded ${
-                        label.includes('BLOOD') || label.includes('WEAPON') || label.includes('VIOLENCE')
+                    <span
+                      key={idx}
+                      className={`text-[10px] px-1.5 py-0.5 rounded ${label.includes('BLOOD') || label.includes('WEAPON') || label.includes('VIOLENCE')
                           ? 'bg-red-50 text-red-600 border border-red-100'
                           : 'bg-gray-100 text-gray-600 border border-gray-200'
-                      }`}
+                        }`}
                     >
                       {label.replace('_', ' ')}
                     </span>
                   ))}
                 </div>
               )}
-              
+
               {video.analysisConfidence && video.status === "completed" && (
                 <div className="mt-3 pt-3 border-t border-gray-50 flex items-center justify-between">
                   <div className="flex items-center space-x-1">
@@ -178,10 +175,9 @@ const VideoList = React.memo(({ onSelectVideo }) => {
                       AI Confidence
                     </span>
                   </div>
-                  <span className={`text-[10px] font-bold ${
-                    video.analysisConfidence > 80 ? "text-green-600" : 
-                    video.analysisConfidence > 50 ? "text-yellow-600" : "text-red-600"
-                  }`}>
+                  <span className={`text-[10px] font-bold ${video.analysisConfidence > 80 ? "text-green-600" :
+                      video.analysisConfidence > 50 ? "text-yellow-600" : "text-red-600"
+                    }`}>
                     {video.analysisConfidence}%
                   </span>
                 </div>

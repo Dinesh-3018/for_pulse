@@ -19,10 +19,10 @@ const Navbar = () => {
                     <div className="flex items-center">
                         <Link to="/" className="flex items-center space-x-2">
                             <Video className="h-8 w-8 text-primary-600" />
-                            <span className="text-xl font-bold text-gray-900 tracking-tight">StreamGuard</span>
+                            <span className="text-xl font-bold text-gray-900 tracking-tight">Pluse Gen Ai - Assessment</span>
                         </Link>
                     </div>
-                    
+
                     <div className="flex items-center space-x-4">
                         {user ? (
                             <>
@@ -35,7 +35,7 @@ const Navbar = () => {
                                         <span>Upload</span>
                                     </Link>
                                 )}
-                                <button 
+                                <button
                                     onClick={handleLogout}
                                     className="flex items-center space-x-1 text-gray-500 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                                 >

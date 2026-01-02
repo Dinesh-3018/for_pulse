@@ -10,6 +10,7 @@ import { Upload, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { initSocket, disconnectSocket, getSocket } from "../services/socket";
+import API_BASE_URL from "../config";
 
 const Dashboard = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -23,10 +24,10 @@ const Dashboard = () => {
   // Initialize Socket for real-time updates on processing videos
   const socketInitialized = React.useRef(false);
   const userIdRef = React.useRef(null);
-  
+
   useEffect(() => {
     const currentUserId = user?._id || user?.id;
-    
+
     // Only initialize if user exists, token exists, and socket not already initialized for this user
     if (currentUserId && token && (!socketInitialized.current || userIdRef.current !== currentUserId)) {
       console.log("Dashboard: Initializing socket...");
@@ -57,12 +58,12 @@ const Dashboard = () => {
     const checkOnboardingStatus = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/onboarding/status",
+          `${API_BASE_URL}/api/onboarding/status`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        
+
         // Show onboarding if not completed
         if (!response.data.onboardingCompleted) {
           setShowOnboarding(true);
@@ -142,16 +143,15 @@ const Dashboard = () => {
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`flex items-center space-x-1 px-4 py-2 rounded-lg border transition-all ${
-                  currentPage === 1
+                className={`flex items-center space-x-1 px-4 py-2 rounded-lg border transition-all ${currentPage === 1
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                     : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
-                }`}
+                  }`}
               >
                 <ChevronLeft className="h-4 w-4" />
                 <span>Previous</span>
               </button>
-              
+
               {/* Page numbers */}
               <div className="hidden sm:flex items-center space-x-1">
                 {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
@@ -165,16 +165,15 @@ const Dashboard = () => {
                   } else {
                     pageNum = currentPage - 2 + i;
                   }
-                  
+
                   return (
                     <button
                       key={pageNum}
                       onClick={() => handlePageChange(pageNum)}
-                      className={`px-3 py-2 rounded-lg transition-all ${
-                        currentPage === pageNum
+                      className={`px-3 py-2 rounded-lg transition-all ${currentPage === pageNum
                           ? "bg-primary-600 text-white font-bold"
                           : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
-                      }`}
+                        }`}
                     >
                       {pageNum}
                     </button>
@@ -185,11 +184,10 @@ const Dashboard = () => {
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === pagination.totalPages}
-                className={`flex items-center space-x-1 px-4 py-2 rounded-lg border transition-all ${
-                  currentPage === pagination.totalPages
+                className={`flex items-center space-x-1 px-4 py-2 rounded-lg border transition-all ${currentPage === pagination.totalPages
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                     : "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
-                }`}
+                  }`}
               >
                 <span>Next</span>
                 <ChevronRight className="h-4 w-4" />

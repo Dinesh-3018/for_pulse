@@ -1,4 +1,5 @@
 import { io } from "socket.io-client";
+import API_BASE_URL from "../config";
 import {
   setProcessingProgress,
   setAnalysisProgress,
@@ -33,7 +34,7 @@ export const initSocket = (userId, dispatch) => {
 
   console.log("Initializing new socket connection for user:", userId);
 
-  socket = io("http://localhost:5001", {
+  socket = io(API_BASE_URL, {
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
