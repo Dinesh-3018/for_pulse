@@ -50,6 +50,12 @@ app.use("/api/videos", videoRoutes);
 app.use("/api/onboarding", onboardingRoutes);
 app.use("/api/superadmin", superadminRoutes);
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./src/config/swagger');
+
+// Swagger Middleware
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
 app.get("/", (req, res) => {
   res.json({ message: "Video Analyzer API is running" });
 });

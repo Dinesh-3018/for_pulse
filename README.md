@@ -65,8 +65,13 @@ cd frontend
 npm run dev
 ```
 (Runs on http://localhost:5173)
+(Runs on http://localhost:5173)
 
-### Production Build
+### Deployed Application
+
+- **Frontend**: [https://for-pulse.vercel.app/dashboard](https://for-pulse.vercel.app/dashboard)
+- **Super Admin**: [https://for-pulse.vercel.app/superadmin](https://for-pulse.vercel.app/superadmin)
+- **Backend API**: https://for-pulse.onrender.com
 
 **Frontend:**
 
@@ -82,3 +87,15 @@ npm run preview
 - User authentication
 - Real-time status updates via Socket.io
 - Dashboard for viewing results
+- **Swagger API Documentation**: Interactive API testing
+
+## API Documentation
+
+The backend provides interactive API documentation via Swagger UI.
+
+- **Local Development**: [http://localhost:5001/api-docs](http://localhost:5001/api-docs)
+- **Production**: [https://for-pulse.onrender.com/api-docs](https://for-pulse.onrender.com/api-docs)
+
+## UI Documentation
+
+For detailed information about the frontend architecture, components, and state management, please refer to [FRONTEND_DOCS.md](frontend/FRONTEND_DOCS.md).

@@ -8,6 +8,25 @@ const User = require("../models/User");
  * @desc    Check if user has completed onboarding
  * @access  Private
  */
+/**
+ * @swagger
+ * tags:
+ *   name: Onboarding
+ *   description: User onboarding flow
+ */
+
+/**
+ * @swagger
+ * /onboarding/status:
+ *   get:
+ *     summary: Get onboarding status
+ *     tags: [Onboarding]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Onboarding status
+ */
 router.get("/status", auth, async (req, res) => {
   try {
     // Fetch fresh user data from database to ensure we have all fields
@@ -31,9 +50,16 @@ router.get("/status", auth, async (req, res) => {
 });
 
 /**
- * @route   GET /api/onboarding/analyzers
- * @desc    Get available analyzer options
- * @access  Private
+ * @swagger
+ * /onboarding/analyzers:
+ *   get:
+ *     summary: Get available analyzers
+ *     tags: [Onboarding]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of analyzers
  */
 router.get("/analyzers", auth, async (req, res) => {
   try {
@@ -57,6 +83,16 @@ router.get("/analyzers", auth, async (req, res) => {
         id: "google",
         name: "Google Video Intelligence",
         description: "Reliable cloud-based analysis",
+        features: [
+          "Weapon Detection",
+          "Explicit Content",
+          "Violence Labels",
+          "Military Context",
+        ],
+        accuracy: "85-90%",
+        cost: "Medium ($0.10/min)",
+        recommended: false,
+        icon: "☁️",
         features: [
           "Weapon Detection",
           "Explicit Content",
@@ -94,9 +130,26 @@ router.get("/analyzers", auth, async (req, res) => {
 });
 
 /**
- * @route   PUT /api/onboarding/preferences
- * @desc    Save user's analyzer preference
- * @access  Private
+ * @swagger
+ * /onboarding/preferences:
+ *   put:
+ *     summary: Save onboarding preferences
+ *     tags: [Onboarding]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               analyzerPreference:
+ *                 type: string
+ *                 enum: [hybrid, google, tensorflow]
+ *     responses:
+ *       200:
+ *         description: Preferences saved
  */
 router.put("/preferences", auth, async (req, res) => {
   try {
@@ -149,9 +202,16 @@ router.put("/preferences", auth, async (req, res) => {
 });
 
 /**
- * @route   POST /api/onboarding/complete
- * @desc    Mark onboarding as complete
- * @access  Private
+ * @swagger
+ * /onboarding/complete:
+ *   post:
+ *     summary: Complete onboarding
+ *     tags: [Onboarding]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Onboarding completed
  */
 router.post("/complete", auth, async (req, res) => {
   try {
@@ -178,9 +238,25 @@ router.post("/complete", auth, async (req, res) => {
 });
 
 /**
- * @route   PUT /api/onboarding/step
- * @desc    Update current onboarding step
- * @access  Private
+ * @swagger
+ * /onboarding/step:
+ *   put:
+ *     summary: Update onboarding step
+ *     tags: [Onboarding]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               step:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Step updated
  */
 router.put("/step", auth, async (req, res) => {
   try {
